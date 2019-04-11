@@ -4,17 +4,17 @@ import 'package:readhub/models/topic.dart';
 @immutable
 class TopicState {
   final List<Topic> topics;
-  final bool isLoading;
+  final bool fetching;
 
-  TopicState({this.topics, this.isLoading = true});
+  TopicState({this.topics, this.fetching = true});
 
-  TopicState copyWith({List<Topic> topics, bool isLoading}) {
+  TopicState copyWith({List<Topic> topics, bool fetching}) {
     return TopicState(
         topics: topics ?? this.topics,
-        isLoading: isLoading ?? this.isLoading);
+        fetching: fetching ?? this.fetching);
   }
 
   TopicState.initialState()
       : topics = [],
-        isLoading = true;
+        fetching = true;
 }

@@ -6,8 +6,7 @@ import 'package:readhub/redux/states/main.dart';
 class TopicViewModel extends ViewModel {
   TopicViewModel(Store<ReduxState> store) : super(store);
 
-  List<Topic> get topics => this
-      .store
-      .state
-      .topics.topics;
+  List<Topic> get topics => this.store.state.topics.topics;
+
+  bool get fetching => this.store.state.topics.fetching;
 }

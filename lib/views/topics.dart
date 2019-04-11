@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:readhub/api/nework.dart';
 import 'package:readhub/redux/states/main.dart';
+import 'package:readhub/redux/view_models/main.dart';
 import 'package:readhub/redux/view_models/topicViewModel.dart';
 import 'package:readhub/widgets/topic_item.dart';
 
@@ -22,10 +24,34 @@ class Topics extends StatefulWidget {
 }
 
 class _TopicsState extends State<Topics> {
+  ScrollController _scrollController = new ScrollController();
+
   @override
   void initState() {
     widget.api.fetchTopics();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     super.initState();
+  }
+
+  void _loadMore() {
+    widget.api.fetchTopics(more: true);
+  }
+
+  Widget _buildProgressIndicator(bool fetching) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Opacity(
+          opacity: fetching ? 1.0 : 0.0,
+          child: CupertinoActivityIndicator(),
+        ),
+      ),
+    );
   }
 
   @override
@@ -44,11 +70,19 @@ class _TopicsState extends State<Topics> {
         appBar: AppBar(
           title: Text('热门话题'),
         ),
-        body: Container(
+        body: RefreshIndicator(
+          onRefresh: () async{
+            await widget.api.fetchTopics(more: true);
+            return null;
+          },
           child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics (),
-              itemCount: vm.topics.length,
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: vm.topics.length + 1,
               itemBuilder: (context, int index) {
+                if (index == vm.topics.length) {
+                  return _buildProgressIndicator(vm.fetching);
+                }
                 return TopicItem(topic: vm.topics[index]);
               }),
         ),

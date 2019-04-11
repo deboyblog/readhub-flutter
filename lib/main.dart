@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readhub/redux/states/main.dart';
 import 'package:readhub/redux/view_models/main.dart';
+import 'package:readhub/widgets/webview.dart';
 import 'package:readhub/views/wrapper.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -37,6 +38,9 @@ class Readhub extends StatelessWidget {
             primarySwatch: Colors.blueGrey,
           ),
           home: Wrapper(),
+          routes: {
+            'webview': (_) => Webview()
+          },
         ));
   }
 }
