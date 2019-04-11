@@ -1,4 +1,4 @@
-# readhub_flutter
+# Readhub
 
 A new Flutter project.
 
