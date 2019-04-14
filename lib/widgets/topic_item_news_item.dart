@@ -13,8 +13,7 @@ class TopicItemNewsItem extends StatelessWidget {
   TopicItemNewsItem({Key key, this.newsShort}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return 
-    InkWell(
+    return InkWell(
       child: Container(
           alignment: Alignment.bottomLeft,
           padding: EdgeInsets.all(10),
@@ -39,7 +38,7 @@ class TopicItemNewsItem extends StatelessWidget {
                     Text(
                       newsShort.title,
                       overflow: TextOverflow.ellipsis,
-        softWrap: false,
+                      softWrap: false,
                       style: TextStyle(
                           color: Color.fromRGBO(0, 0, 0, .9),
                           fontSize: 16,
@@ -49,7 +48,6 @@ class TopicItemNewsItem extends StatelessWidget {
                       newsShort.siteName,
                       style: TextStyle(
                           color: Color.fromRGBO(0, 0, 0, .5),
-
                           fontSize: 14,
                           height: 1),
                     ),

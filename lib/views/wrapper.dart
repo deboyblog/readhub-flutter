@@ -18,12 +18,12 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> with TickerProviderStateMixin {
   TabController controller;
-  int selectedIndex = 0;
+  int selectedIndex = 1;
   Network api;
   @override
   void initState() {
     api = new Network();
-    controller = TabController(vsync: this, length: 5);
+    controller = TabController(vsync: this, length: 5, initialIndex: selectedIndex);
     controller.addListener(() {
       setState(() {
         selectedIndex = controller.index;

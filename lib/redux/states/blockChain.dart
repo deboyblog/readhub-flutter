@@ -4,17 +4,17 @@ import 'package:readhub/models/news.dart';
 @immutable
 class BlockChainState {
   final List<News> blockChainNews;
-  final bool isLoading;
+  final bool fetching;
 
-  BlockChainState({this.blockChainNews, this.isLoading = true});
+  BlockChainState({this.blockChainNews, this.fetching = true});
 
-  BlockChainState copyWith({List<News> news, bool isLoading}) {
+  BlockChainState copyWith({List<News> news, bool fetching}) {
     return BlockChainState(
         blockChainNews: blockChainNews ?? this.blockChainNews,
-        isLoading: isLoading ?? this.isLoading);
+        fetching: fetching ?? this.fetching);
   }
 
   BlockChainState.initialState()
       : blockChainNews = [],
-        isLoading = true;
+        fetching = true;
 }

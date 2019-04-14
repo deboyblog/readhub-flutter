@@ -24,7 +24,7 @@ class News {
     String siteName;
     String language;
     String authorName;
-    String publishDate;
+    DateTime publishDate;
 
     News({
         this.summary,
@@ -49,7 +49,7 @@ class News {
         siteName: json["siteName"],
         language: json["language"],
         authorName: json["authorName"],
-        publishDate: json["publishDate"],
+        publishDate: DateTime.parse(json["publishDate"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -62,6 +62,6 @@ class News {
         "siteName": siteName,
         "language": language,
         "authorName": authorName,
-        "publishDate": publishDate,
+        "publishDate": publishDate.toIso8601String(),
     };
 }

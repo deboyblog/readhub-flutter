@@ -4,17 +4,17 @@ import 'package:readhub/models/news.dart';
 @immutable
 class TechState {
   final List<News> techNews;
-  final bool isLoading;
+  final bool fetching;
 
-  TechState({this.techNews, this.isLoading = true});
+  TechState({this.techNews, this.fetching = true});
 
-  TechState copyWith({List<News> news, bool isLoading}) {
+  TechState copyWith({List<News> news, bool fetching}) {
     return TechState(
         techNews: techNews ?? this.techNews,
-        isLoading: isLoading ?? this.isLoading);
+        fetching: fetching ?? this.fetching);
   }
 
   TechState.initialState()
       : techNews = [],
-        isLoading = true;
+        fetching = true;
 }

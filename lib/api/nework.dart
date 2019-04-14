@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:readhub/models/news.dart';
 import 'package:readhub/models/topic.dart';
 import 'package:readhub/models/topicDetail.dart';
+import 'package:readhub/redux/actions/news.dart';
 import 'package:readhub/redux/actions/topic.dart';
+import 'package:readhub/redux/states/news.dart';
 import 'package:readhub/redux/states/topic.dart';
 import 'package:readhub/redux/view_models/main.dart';
 
@@ -21,7 +24,8 @@ class Network {
     List<Topic> list = lastCursor > 0 ? topicState.topics : [];
     List<dynamic> dataList = data.data['data'];
     list.addAll(dataList.map((data) => Topic.fromJson(data)).toList());
-    StoreContainer.global.dispatch(UpdateTopicTotal(total: data.data['totalItems']));
+    StoreContainer.global
+        .dispatch(UpdateTopicTotal(total: data.data['totalItems']));
     StoreContainer.global.dispatch(UpdateTopics(topics: list));
   }
 
@@ -37,5 +41,26 @@ class Network {
       };
     }
     return TopicDetail.fromJson(topicDetail);
+  }
+
+  static Future<void> fetchNews({int pageSize = 10, bool more = false}) async {
+    StoreContainer.global.dispatch(UpdateTopicFetching(fetching: true));
+    NewsState newsState = StoreContainer.global.state.news;
+    String lastCursor = ((more
+                    ? newsState.news[newsState.news.length - 1].publishDate.toUtc().millisecondsSinceEpoch
+                    : newsState.firstFetchingTimestamp) /
+                10000)
+            .toStringAsFixed(0) +
+        '0000';
+    Response data = await Dio().get('$baseUrl/news', queryParameters: {
+      'lastCursor': int.parse(lastCursor),
+      'pageSize': pageSize
+    });
+    List<News> list = more ? newsState.news : [];
+    List<dynamic> dataList = data.data['data'];
+    list.addAll(dataList.map((data) => News.fromJson(data)).toList());
+    StoreContainer.global
+        .dispatch(UpdateNewsTotal(total: data.data['totalItems']));
+    StoreContainer.global.dispatch(UpdateNews(news: list));
   }
 }

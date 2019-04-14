@@ -4,17 +4,25 @@ import 'package:readhub/models/news.dart';
 @immutable
 class NewsState {
   final List<News> news;
-  final bool isLoading;
+  final bool fetching;
+  final int total;
+  final int firstFetchingTimestamp;
 
-  NewsState({this.news, this.isLoading = true});
+  NewsState({this.news, this.fetching = true, this.total, this.firstFetchingTimestamp});
 
-  NewsState copyWith({List<News> news, bool isLoading}) {
+  NewsState copyWith({List<News> news, bool fetching, int total, int firstFetchingTimestamp}) {
     return NewsState(
         news: news ?? this.news,
-        isLoading: isLoading ?? this.isLoading);
+        fetching: fetching ?? this.fetching,
+        total: total ?? this.total,
+        firstFetchingTimestamp: firstFetchingTimestamp ?? this.firstFetchingTimestamp
+        );
   }
 
   NewsState.initialState()
       : news = [],
-        isLoading = true;
+        total = 0,
+        fetching = true,
+        firstFetchingTimestamp = DateTime.now().toUtc().millisecondsSinceEpoch
+        ;
 }
