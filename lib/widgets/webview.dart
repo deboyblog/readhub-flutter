@@ -21,10 +21,7 @@ class _WebviewState extends State<Webview> {
   @override
   Widget build(BuildContext context) {
     Map routeParams = ModalRoute.of(context).settings.arguments;
-    print({
-      'title': routeParams['title'],
-      'url': routeParams['url']
-    });
+    print({'title': routeParams['title'], 'url': routeParams['url']});
     return new WebviewScaffold(
       url: routeParams['url'],
       appBar: AppBar(
@@ -42,7 +39,10 @@ class _WebviewState extends State<Webview> {
               CupertinoActivityIndicator(),
               Text(
                 '加载中...',
-                style: TextStyle(fontSize: 16, height: 1.5),
+                style: TextStyle(
+                    fontSize: 14,
+                    height: 1.2,
+                    color: Color.fromRGBO(153, 153, 153, 1)),
               )
             ],
           ),

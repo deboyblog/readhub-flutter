@@ -35,7 +35,8 @@ class Readhub extends StatelessWidget {
             // or simply save your changes to "hot reload" in a Flutter IDE).
             // Notice that the counter didn't reset back to zero; the application
             // is not restarted.
-            primarySwatch: Colors.blueGrey,
+            // rgb(73, 172, 225)
+            primaryColor: Color.lerp(Color.fromRGBO(54, 209, 220, 1), Color.fromRGBO(91, 134, 229, 1), .7),
           ),
           home: Wrapper(),
           routes: {

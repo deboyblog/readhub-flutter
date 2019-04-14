@@ -39,7 +39,7 @@ class _WrapperState extends State<Wrapper> with TickerProviderStateMixin {
           controller: controller,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            Topics(api: api,),
+            Topics(),
             News(),
             Tech(),
             BlockChain(),
@@ -79,7 +79,7 @@ class _WrapperState extends State<Wrapper> with TickerProviderStateMixin {
                   text: "招聘",
                   icon: Icons.face,
                   selected: selectedIndex == 4,
-                )
+                ),
               ],
             ),
           ),

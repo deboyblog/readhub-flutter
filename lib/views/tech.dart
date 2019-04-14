@@ -25,7 +25,7 @@ class _TechState extends State<Tech> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(title: Text('开发者资讯'),),
+      appBar: AppBar(title: Text('开发者资讯', style: TextStyle(color: Color(0xffffffff)),),),
       body: Text('topics'),
     );
   }

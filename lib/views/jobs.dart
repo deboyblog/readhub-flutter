@@ -25,7 +25,7 @@ class _JobsState extends State<Jobs> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(title: Text('招聘行情'),),
+      appBar: AppBar(title: Text('招聘行情', style: TextStyle(color: Color(0xffffffff)),),),
       body: Text('topics'),
     );
   }

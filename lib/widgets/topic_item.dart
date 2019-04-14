@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:readhub/common/utils.dart';
 import 'package:readhub/models/topic.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:readhub/views/topic_detail.dart';
+import 'package:readhub/widgets/topic_item_header.dart';
+import 'package:readhub/widgets/topic_item_news_item.dart';
+import 'package:readhub/widgets/topic_item_summary.dart';
 
 class TopicItem extends StatefulWidget {
   final Topic topic;
@@ -25,42 +29,45 @@ class _TopicItemState extends State<TopicItem> {
   }
 
   Widget _buildDetailView() {
-    Widget newsRow(NewsArray newsItem) {
-      return ListTile(
-        title: Text(
-          newsItem.title,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-        ),
-        subtitle: Text('${newsItem.siteName}'),
-        onTap: () {
-          print(newsItem);
-          Navigator.pushNamed(context, 'webview',
-              arguments: {'url': newsItem.mobileUrl, 'title': newsItem.title});
-        },
-        contentPadding: EdgeInsets.all(0),
-      );
-    }
-
     List<Widget> detailView = [
-      Padding(
-        padding: EdgeInsets.only(top: 15, bottom: 15),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            widget.topic.summary,
-            style: TextStyle(
-                color: Color.fromRGBO(155, 155, 155, 1),
-                fontSize: 16.0,
-                letterSpacing: .35,
-                height: 1.2),
-          ),
-        ),
-      )
+      TopicItemSummary(summary: widget.topic.summary, color: Color.fromRGBO(155, 155, 155, 1),),
     ];
-    widget.topic.newsArray.forEach((NewsArray newsItem) {
-      detailView.add(newsRow(newsItem));
+    // 合并重复的新闻
+    List<NewsShort> news = Utils.mergeDuplicateNews(widget.topic.newsArray);
+    news.forEach((NewsShort newsItem) {
+      detailView.add(TopicItemNewsItem(newsShort: newsItem,));
     });
+    detailView.add(InkWell(
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TopicDetailView(id: widget.topic.id)),
+          ),
+      child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                  width: .5, color: Color.fromRGBO(153, 153, 153, 1)),
+            ),
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '查看话题',
+                  style: TextStyle(
+                    color: Color.fromRGBO(127, 127, 127, 1),
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color.fromRGBO(127, 127, 127, 1),
+                  size: 14,
+                )
+              ])),
+    ));
     return Column(
       children: detailView,
     );
@@ -68,32 +75,15 @@ class _TopicItemState extends State<TopicItem> {
 
   @override
   Widget build(BuildContext context) {
-    final timeAgo = DateTime.parse(widget.topic.createdAt);
-    timeago.setLocaleMessages('zh_CN', timeago.ZhCnMessages());
     List<Widget> widgets = [
       InkWell(
-        onTap: _onToggle,
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            widget.topic.title,
-            style: TextStyle(fontSize: 18.0, letterSpacing: .2, height: 1.2),
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 8),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            timeago.format(timeAgo, locale: 'zh_CN'),
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.grey[400],
-            ),
-          ),
-        ),
-      )
+          onTap: _onToggle,
+          child: Padding(
+              padding: EdgeInsets.all(8),
+              child: TopicItemHeader(
+                title: widget.topic.title,
+                createdAt: widget.topic.createdAt,
+              )))
     ];
     if (_showDetail) {
       widgets.add(_buildDetailView());
@@ -101,9 +91,6 @@ class _TopicItemState extends State<TopicItem> {
     return Card(
         borderOnForeground: false,
         elevation: _showDetail ? 5 : 1,
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(children: widgets),
-        ));
+        child: Column(children: widgets));
   }
 }

@@ -25,7 +25,7 @@ class _BlockChainState extends State<BlockChain> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(title: Text('区块链快讯'),),
+      appBar: AppBar(title: Text('区块链快讯', style: TextStyle(color: Color(0xffffffff)),),),
       body: Text('topics'),
     );
   }

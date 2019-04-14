@@ -8,5 +8,7 @@ class TopicViewModel extends ViewModel {
 
   List<Topic> get topics => this.store.state.topics.topics;
 
+  int get total => this.store.state.topics.total;
+
   bool get fetching => this.store.state.topics.fetching;
 }

@@ -1,16 +1,16 @@
 # Readhub
+用Flutter搭建的Readhub手机客户端
 
-A new Flutter project.
+# 配色说明
 
-## Getting Started
+## LOGO
 
-This project is a starting point for a Flutter application.
+渐变：#36D1DC-#5B86E5
 
-A few resources to get you started if this is your first Flutter project:
+# Roadmap
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+* [ ] 优化Redux结构（应用状态比较简单 可以考虑移除Redux）
+* [ ] 热门话题展开Card优化（动画？独立Dialog？）
+* [ ] 增加夜间模式
+* [ ] 底部Tab用户可选展示
+* [ ] Webview打开速度优化（腾讯系媒体网页优化最好 打开最快 可以重排序置顶腾讯系媒体）

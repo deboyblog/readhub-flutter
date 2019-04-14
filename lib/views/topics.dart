@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:readhub/api/nework.dart';
 import 'package:readhub/redux/states/main.dart';
+import 'package:readhub/redux/states/topic.dart';
 import 'package:readhub/redux/view_models/main.dart';
 import 'package:readhub/redux/view_models/topicViewModel.dart';
 import 'package:readhub/widgets/topic_item.dart';
 
 class Topics extends StatefulWidget {
-  final Network api;
-  Topics({Key key, this.api}) : super(key: key);
+  Topics({Key key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -28,10 +28,12 @@ class _TopicsState extends State<Topics> {
 
   @override
   void initState() {
-    widget.api.fetchTopics();
+    Network.fetchTopics();
     _scrollController.addListener(() {
+      TopicState topicState = StoreContainer.global.state.topics;
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+              _scrollController.position.maxScrollExtent &&
+          topicState.topics.length <= topicState.total) {
         _loadMore();
       }
     });
@@ -39,16 +41,16 @@ class _TopicsState extends State<Topics> {
   }
 
   void _loadMore() {
-    widget.api.fetchTopics(more: true);
+    Network.fetchTopics(more: true);
   }
 
-  Widget _buildProgressIndicator(bool fetching) {
+  Widget _buildProgressIndicator(bool fetching, bool isEnd) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: Opacity(
-          opacity: fetching ? 1.0 : 0.0,
-          child: CupertinoActivityIndicator(),
+          opacity: (fetching || isEnd) ? 1.0 : 0.0,
+          child: !isEnd ? CupertinoActivityIndicator() : Text('没有更多啦～'),
         ),
       ),
     );
@@ -65,14 +67,17 @@ class _TopicsState extends State<Topics> {
     return StoreConnector<ReduxState, TopicViewModel>(converter: (store) {
       return TopicViewModel(store);
     }, builder: (context, vm) {
-      print(vm);
+      print({'length': vm.topics.length, 'total': vm.total});
       return Scaffold(
         appBar: AppBar(
-          title: Text('热门话题'),
+          title: Text(
+            '热门话题',
+            style: TextStyle(color: Color(0xffffffff)),
+          ),
         ),
         body: RefreshIndicator(
-          onRefresh: () async{
-            await widget.api.fetchTopics(more: true);
+          onRefresh: () async {
+            await Network.fetchTopics(more: true);
             return null;
           },
           child: ListView.builder(
@@ -81,7 +86,8 @@ class _TopicsState extends State<Topics> {
               itemCount: vm.topics.length + 1,
               itemBuilder: (context, int index) {
                 if (index == vm.topics.length) {
-                  return _buildProgressIndicator(vm.fetching);
+                  return _buildProgressIndicator(
+                      vm.fetching, vm.topics.length == vm.total);
                 }
                 return TopicItem(topic: vm.topics[index]);
               }),

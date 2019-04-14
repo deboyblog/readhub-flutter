@@ -1,3 +1,5 @@
+import 'package:readhub/widgets/topic_item_news_item.dart';
+
 class Utils {
   static String readTimestamp(int timestamp) {
     String temp = "";
@@ -24,5 +26,27 @@ class Utils {
       e.toString();
     }
     return temp;
+  }
+
+  static List<NewsShort> mergeDuplicateNews(List<dynamic> newsList) {
+    List<NewsShort> news = [];
+    newsList.forEach((newsItem) {
+      List<NewsShort> tmp = news.length == 0
+          ? []
+          : news.where((item) {
+              return item.duplicateId == newsItem.duplicateId;
+            }).toList();
+      if (tmp.isEmpty) {
+        news.add(new NewsShort(
+            title: newsItem.title,
+            mobileUrl: newsItem.mobileUrl,
+            siteName: newsItem.siteName,
+            duplicateId: newsItem.duplicateId));
+      } else {
+        print(tmp);
+        tmp[0].siteName = tmp[0].siteName + '/' + newsItem.siteName;
+      }
+    });
+    return news;
   }
 }

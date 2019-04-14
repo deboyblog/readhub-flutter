@@ -9,5 +9,8 @@ TopicState reducer(TopicState state, ActionType action) {
   if (action is UpdateTopicFetching) {
     return state.copyWith(fetching: action.fetching);
   }
+  if (action is UpdateTopicTotal) {
+    return state.copyWith(total: action.total);
+  }
   return state;
 }

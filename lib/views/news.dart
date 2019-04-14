@@ -25,7 +25,7 @@ class _NewsState extends State<News> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(title: Text('科技动态'),),
+      appBar: AppBar(title: Text('科技动态', style: TextStyle(color: Color(0xffffffff)),),),
       body: Text('科技动态'),
     );
   }

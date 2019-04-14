@@ -1,38 +1,39 @@
 // To parse this JSON data, do
 //
-//     final topic = topicFromJson(jsonString);
+//     final topicDetail = topicDetailFromJson(jsonString);
 
 import 'dart:convert';
 
-Topic topicFromJson(String str) {
+TopicDetail topicDetailFromJson(String str) {
     final jsonData = json.decode(str);
-    return Topic.fromJson(jsonData);
+    return TopicDetail.fromJson(jsonData);
 }
 
-String topicToJson(Topic data) {
+String topicDetailToJson(TopicDetail data) {
     final dyn = data.toJson();
     return json.encode(dyn);
 }
 
-class Topic {
+class TopicDetail {
     String id;
+    List<EntityTopic> entityTopics;
     List<NewsArray> newsArray;
     DateTime createdAt;
-    List<EventDatum> eventData;
+    List<dynamic> entityEventTopics;
     DateTime publishDate;
     String summary;
     String title;
     DateTime updatedAt;
-    String timeline;
+    Timeline timeline;
     int order;
     bool hasInstantView;
-    Extra extra;
 
-    Topic({
+    TopicDetail({
         this.id,
+        this.entityTopics,
         this.newsArray,
         this.createdAt,
-        this.eventData,
+        this.entityEventTopics,
         this.publishDate,
         this.summary,
         this.title,
@@ -40,106 +41,81 @@ class Topic {
         this.timeline,
         this.order,
         this.hasInstantView,
-        this.extra,
     });
 
-    factory Topic.fromJson(Map<String, dynamic> json) => new Topic(
+    factory TopicDetail.fromJson(Map<String, dynamic> json) => new TopicDetail(
         id: json["id"],
+        entityTopics: new List<EntityTopic>.from(json["entityTopics"].map((x) => EntityTopic.fromJson(x))),
         newsArray: new List<NewsArray>.from(json["newsArray"].map((x) => NewsArray.fromJson(x))),
         createdAt: DateTime.parse(json["createdAt"]),
-        eventData: new List<EventDatum>.from(json["eventData"].map((x) => EventDatum.fromJson(x))),
+        entityEventTopics: new List<dynamic>.from(json["entityEventTopics"].map((x) => x)),
         publishDate: DateTime.parse(json["publishDate"]),
         summary: json["summary"],
         title: json["title"],
         updatedAt: DateTime.parse(json["updatedAt"]),
-        timeline: json["timeline"],
+        timeline: Timeline.fromJson(json["timeline"]),
         order: json["order"],
         hasInstantView: json["hasInstantView"],
-        extra: Extra.fromJson(json["extra"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
+        "entityTopics": new List<dynamic>.from(entityTopics.map((x) => x.toJson())),
         "newsArray": new List<dynamic>.from(newsArray.map((x) => x.toJson())),
         "createdAt": createdAt.toIso8601String(),
-        "eventData": new List<dynamic>.from(eventData.map((x) => x.toJson())),
+        "entityEventTopics": new List<dynamic>.from(entityEventTopics.map((x) => x)),
         "publishDate": publishDate.toIso8601String(),
         "summary": summary,
         "title": title,
         "updatedAt": updatedAt.toIso8601String(),
-        "timeline": timeline,
+        "timeline": timeline.toJson(),
         "order": order,
         "hasInstantView": hasInstantView,
-        "extra": extra.toJson(),
     };
 }
 
-class EventDatum {
-    int id;
-    String topicId;
-    int eventType;
+class EntityTopic {
+    double weight;
+    String nerName;
     String entityId;
-    String entityType;
     String entityName;
-    int state;
-    DateTime createdAt;
-    DateTime updatedAt;
+    String entityType;
+    String entityUniqueId;
+    dynamic finance;
 
-    EventDatum({
-        this.id,
-        this.topicId,
-        this.eventType,
+    EntityTopic({
+        this.weight,
+        this.nerName,
         this.entityId,
-        this.entityType,
         this.entityName,
-        this.state,
-        this.createdAt,
-        this.updatedAt,
+        this.entityType,
+        this.entityUniqueId,
+        this.finance,
     });
 
-    factory EventDatum.fromJson(Map<String, dynamic> json) => new EventDatum(
-        id: json["id"],
-        topicId: json["topicId"],
-        eventType: json["eventType"],
+    factory EntityTopic.fromJson(Map<String, dynamic> json) => new EntityTopic(
+        weight: json["weight"].toDouble(),
+        nerName: json["nerName"],
         entityId: json["entityId"],
-        entityType: json["entityType"],
         entityName: json["entityName"],
-        state: json["state"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        entityType: json["entityType"],
+        entityUniqueId: json["entityUniqueId"],
+        finance: json["finance"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "topicId": topicId,
-        "eventType": eventType,
+        "weight": weight,
+        "nerName": nerName,
         "entityId": entityId,
-        "entityType": entityType,
         "entityName": entityName,
-        "state": state,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-    };
-}
-
-class Extra {
-    bool instantView;
-
-    Extra({
-        this.instantView,
-    });
-
-    factory Extra.fromJson(Map<String, dynamic> json) => new Extra(
-        instantView: json["instantView"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "instantView": instantView,
+        "entityType": entityType,
+        "entityUniqueId": entityUniqueId,
+        "finance": finance,
     };
 }
 
 class NewsArray {
-    int id;
+    String id;
     String url;
     String title;
     String siteName;
@@ -187,5 +163,53 @@ class NewsArray {
         "publishDate": publishDate.toIso8601String(),
         "language": language,
         "statementType": statementType,
+    };
+}
+
+class Timeline {
+    List<TopicSimple> topics;
+    List<dynamic> commonEntities;
+    String id;
+
+    Timeline({
+        this.topics,
+        this.commonEntities,
+        this.id,
+    });
+
+    factory Timeline.fromJson(Map<String, dynamic> json) => new Timeline(
+        topics: new List<TopicSimple>.from(json["topics"].map((x) => TopicSimple.fromJson(x))),
+        commonEntities: new List<dynamic>.from(json["commonEntities"].map((x) => x)),
+        id: json["id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "topics": new List<dynamic>.from(topics.map((x) => x.toJson())),
+        "commonEntities": new List<dynamic>.from(commonEntities.map((x) => x)),
+        "id": id,
+    };
+}
+
+class TopicSimple {
+    String id;
+    String title;
+    DateTime createdAt;
+
+    TopicSimple({
+        this.id,
+        this.title,
+        this.createdAt,
+    });
+
+    factory TopicSimple.fromJson(Map<String, dynamic> json) => new TopicSimple(
+        id: json["id"],
+        title: json["title"],
+        createdAt: DateTime.parse(json["createdAt"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "createdAt": createdAt.toIso8601String(),
     };
 }
