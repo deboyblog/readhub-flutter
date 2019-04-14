@@ -77,7 +77,7 @@ class _TopicsState extends State<Topics> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await Network.fetchTopics(more: true);
+            await Network.fetchTopics(more: false);
             return null;
           },
           child: ListView.builder(
