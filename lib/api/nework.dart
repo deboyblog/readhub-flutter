@@ -3,8 +3,10 @@ import 'package:readhub/models/news.dart';
 import 'package:readhub/models/topic.dart';
 import 'package:readhub/models/topicDetail.dart';
 import 'package:readhub/redux/actions/news.dart';
+import 'package:readhub/redux/actions/blockChain.dart';
 import 'package:readhub/redux/actions/tech.dart';
 import 'package:readhub/redux/actions/topic.dart';
+import 'package:readhub/redux/states/blockChain.dart';
 import 'package:readhub/redux/states/news.dart';
 import 'package:readhub/redux/states/tech.dart';
 import 'package:readhub/redux/states/topic.dart';
@@ -79,5 +81,22 @@ class Network {
     StoreContainer.global
         .dispatch(UpdateTechTotal(total: data.data['totalItems']));
     StoreContainer.global.dispatch(UpdateTech(news: list));
+  }
+  static Future<void> fetchBlockChain({int pageSize = 10, bool more = false}) async {
+    StoreContainer.global.dispatch(UpdateBlockChainFetching(fetching: true));
+    BlockChainState blockChainState = StoreContainer.global.state.blockChainNews;
+    int lastCursor = more
+        ? blockChainState.blockChainNews[blockChainState.blockChainNews.length - 1].publishDate
+            .toUtc()
+            .millisecondsSinceEpoch
+        : blockChainState.firstFetchingTimestamp;
+    Response data = await Dio().get('$baseUrl/blockchain',
+        queryParameters: {'lastCursor': lastCursor, 'pageSize': pageSize});
+    List<News> list = more ? blockChainState.blockChainNews : [];
+    List<dynamic> dataList = data.data['data'];
+    list.addAll(dataList.map((data) => News.fromJson(data)).toList());
+    StoreContainer.global
+        .dispatch(UpdateBlockChainTotal(total: data.data['totalItems']));
+    StoreContainer.global.dispatch(UpdateBlockChain(blockChainNews: list));
   }
 }

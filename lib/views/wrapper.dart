@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readhub/api/nework.dart';
-import 'package:readhub/views/blockchain.dart';
+import 'package:readhub/views/blockChain.dart';
 import 'package:readhub/views/topics.dart';
 import 'package:readhub/views/jobs.dart';
 import 'package:readhub/views/news.dart';
@@ -18,7 +18,7 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> with TickerProviderStateMixin {
   TabController controller;
-  int selectedIndex = 2;
+  int selectedIndex = 3;
   Network api;
   @override
   void initState() {

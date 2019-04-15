@@ -32,7 +32,8 @@ class _NewsItemState extends State<NewsItem> {
           child: Padding(
               padding: EdgeInsets.all(8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                // mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     news.title,
@@ -44,11 +45,10 @@ class _NewsItemState extends State<NewsItem> {
                   ),
                   Text(
                     news.summary,
-                     overflow: TextOverflow.ellipsis,
-                     maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
                     style: TextStyle(
                         fontSize: 16,
-                        
                         color: Color.fromRGBO(115, 115, 115, 1),
                         height: 1.1),
                   ),
