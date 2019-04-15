@@ -18,7 +18,7 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> with TickerProviderStateMixin {
   TabController controller;
-  int selectedIndex = 1;
+  int selectedIndex = 2;
   Network api;
   @override
   void initState() {

@@ -14,5 +14,5 @@ class ReduxState {
   final JobState jobs;
 
   const ReduxState(
-      {this.topics, this.news, this.techNews, this.blockChainNews, this.jobs});
+      {this.topics, this.news, this.techNews, this.blockChainNews, this.jobs, NewsState tech});
 }

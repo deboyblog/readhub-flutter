@@ -3,8 +3,10 @@ import 'package:readhub/models/news.dart';
 import 'package:readhub/models/topic.dart';
 import 'package:readhub/models/topicDetail.dart';
 import 'package:readhub/redux/actions/news.dart';
+import 'package:readhub/redux/actions/tech.dart';
 import 'package:readhub/redux/actions/topic.dart';
 import 'package:readhub/redux/states/news.dart';
+import 'package:readhub/redux/states/tech.dart';
 import 'package:readhub/redux/states/topic.dart';
 import 'package:readhub/redux/view_models/main.dart';
 
@@ -59,5 +61,23 @@ class Network {
     StoreContainer.global
         .dispatch(UpdateNewsTotal(total: data.data['totalItems']));
     StoreContainer.global.dispatch(UpdateNews(news: list));
+  }
+
+  static Future<void> fetchTech({int pageSize = 10, bool more = false}) async {
+    StoreContainer.global.dispatch(UpdateTechFetching(fetching: true));
+    TechState techState = StoreContainer.global.state.techNews;
+    int lastCursor = more
+        ? techState.techNews[techState.techNews.length - 1].publishDate
+            .toUtc()
+            .millisecondsSinceEpoch
+        : techState.firstFetchingTimestamp;
+    Response data = await Dio().get('$baseUrl/technews',
+        queryParameters: {'lastCursor': lastCursor, 'pageSize': pageSize});
+    List<News> list = more ? techState.techNews : [];
+    List<dynamic> dataList = data.data['data'];
+    list.addAll(dataList.map((data) => News.fromJson(data)).toList());
+    StoreContainer.global
+        .dispatch(UpdateTechTotal(total: data.data['totalItems']));
+    StoreContainer.global.dispatch(UpdateTech(news: list));
   }
 }
