@@ -16,6 +16,6 @@ class TopicState {
 
   TopicState.initialState()
       : topics = [],
-        total = 0,
+        total = -1,
         fetching = true;
 }

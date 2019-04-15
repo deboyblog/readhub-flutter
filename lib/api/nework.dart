@@ -44,18 +44,15 @@ class Network {
   }
 
   static Future<void> fetchNews({int pageSize = 10, bool more = false}) async {
-    StoreContainer.global.dispatch(UpdateTopicFetching(fetching: true));
+    StoreContainer.global.dispatch(UpdateNewsFetching(fetching: true));
     NewsState newsState = StoreContainer.global.state.news;
-    String lastCursor = ((more
-                    ? newsState.news[newsState.news.length - 1].publishDate.toUtc().millisecondsSinceEpoch
-                    : newsState.firstFetchingTimestamp) /
-                10000)
-            .toStringAsFixed(0) +
-        '0000';
-    Response data = await Dio().get('$baseUrl/news', queryParameters: {
-      'lastCursor': int.parse(lastCursor),
-      'pageSize': pageSize
-    });
+    int lastCursor = more
+        ? newsState.news[newsState.news.length - 1].publishDate
+            .toUtc()
+            .millisecondsSinceEpoch
+        : newsState.firstFetchingTimestamp;
+    Response data = await Dio().get('$baseUrl/news',
+        queryParameters: {'lastCursor': lastCursor, 'pageSize': pageSize});
     List<News> list = more ? newsState.news : [];
     List<dynamic> dataList = data.data['data'];
     list.addAll(dataList.map((data) => News.fromJson(data)).toList());

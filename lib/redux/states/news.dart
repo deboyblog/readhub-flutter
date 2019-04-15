@@ -21,7 +21,7 @@ class NewsState {
 
   NewsState.initialState()
       : news = [],
-        total = 0,
+        total = -1,
         fetching = true,
         firstFetchingTimestamp = DateTime.now().toUtc().millisecondsSinceEpoch
         ;

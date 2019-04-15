@@ -87,7 +87,7 @@ class _NewsState extends State<News> {
               itemBuilder: (context, int index) {
                 if (index == vm.news.length) {
                   return _buildProgressIndicator(
-                      vm.fetching, vm.news.length == vm.total);
+                      vm.fetching, vm.news.length >= vm.total);
                 }
                 return NewsItem(news: vm.news[index]);
               }),
