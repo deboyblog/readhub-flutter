@@ -1,4 +1,4 @@
-# Readhub
+# NewsHub
 用Flutter搭建的Readhub手机客户端
 
 # 配色说明
@@ -9,7 +9,7 @@
 
 # Roadmap
 
-* [ ] 优化Redux结构（应用状态比较简单 可以考虑移除Redux）
+* [ ] 优化Redux结构（应用状态比较简单 可以考虑 <s>移除Redux</s> 使用Mobx替换）
 * [ ] 热门话题展开Card优化（动画？独立Dialog？）
 * [ ] 增加夜间模式
 * [ ] 底部Tab用户可选展示
