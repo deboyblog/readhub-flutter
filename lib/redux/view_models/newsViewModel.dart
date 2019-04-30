@@ -12,5 +12,9 @@ class NewsViewModel extends ViewModel {
 
   bool get fetching => this.store.state.news.fetching;
 
-  int get firstFetchingTimestamp => this.store.state.news.firstFetchingTimestamp;
+  int get firstFetchingTimestamp =>
+      this.store.state.news.firstFetchingTimestamp;
+  bool get isEnd =>
+      this.store.state.news.total >= 0 &&
+      this.store.state.news.news.length >= this.store.state.news.total;
 }

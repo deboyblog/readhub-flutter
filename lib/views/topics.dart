@@ -67,7 +67,6 @@ class _TopicsState extends State<Topics> {
     return StoreConnector<ReduxState, TopicViewModel>(converter: (store) {
       return TopicViewModel(store);
     }, builder: (context, vm) {
-      print({'length': vm.topics.length, 'total': vm.total});
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -81,13 +80,14 @@ class _TopicsState extends State<Topics> {
             return null;
           },
           child: ListView.builder(
+              key: const PageStorageKey('topic_list'),
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: vm.topics.length + 1,
               itemBuilder: (context, int index) {
                 if (index == vm.topics.length) {
                   return _buildProgressIndicator(
-                      vm.fetching, vm.topics.length == vm.total);
+                      vm.fetching, vm.isEnd);
                 }
                 return TopicItem(topic: vm.topics[index]);
               }),

@@ -11,4 +11,7 @@ class TopicViewModel extends ViewModel {
   int get total => this.store.state.topics.total;
 
   bool get fetching => this.store.state.topics.fetching;
+
+  bool get isEnd =>
+      this.store.state.topics.total >= 0 && this.store.state.topics.topics.length >= this.store.state.topics.total;
 }

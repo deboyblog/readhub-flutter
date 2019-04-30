@@ -12,5 +12,11 @@ class BlockChainViewModel extends ViewModel {
 
   bool get fetching => this.store.state.blockChainNews.fetching;
 
-  int get firstFetchingTimestamp => this.store.state.blockChainNews.firstFetchingTimestamp;
+  int get firstFetchingTimestamp =>
+      this.store.state.blockChainNews.firstFetchingTimestamp;
+
+  bool get isEnd =>
+      this.store.state.blockChainNews.total >= 0 &&
+      this.store.state.blockChainNews.blockChainNews.length >=
+          this.store.state.blockChainNews.total;
 }

@@ -43,7 +43,6 @@ class Utils {
             siteName: newsItem.siteName,
             duplicateId: newsItem.duplicateId));
       } else {
-        print(tmp);
         tmp[0].siteName = tmp[0].siteName + '/' + newsItem.siteName;
       }
     });

@@ -67,7 +67,6 @@ class _BlockChainState extends State<BlockChain> {
     return StoreConnector<ReduxState, BlockChainViewModel>(converter: (store) {
       return BlockChainViewModel(store);
     }, builder: (context, vm) {
-      print({'length': vm.news.length, 'total': vm.total});
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -81,13 +80,14 @@ class _BlockChainState extends State<BlockChain> {
             return null;
           },
           child: ListView.builder(
+              key: const PageStorageKey('block_chain_list'),
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: vm.news.length + 1,
               itemBuilder: (context, int index) {
                 if (index == vm.news.length) {
                   return _buildProgressIndicator(
-                      vm.fetching, vm.news.length >= vm.total);
+                      vm.fetching, vm.isEnd);
                 }
                 return NewsItem(news: vm.news[index]);
               }),

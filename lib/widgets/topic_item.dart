@@ -49,7 +49,7 @@ class _TopicItemState extends State<TopicItem> {
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                  width: .5, color: Color.fromRGBO(153, 153, 153, 1)),
+                  width: .5, color: Color.fromRGBO(153, 153, 153, 0.5)),
             ),
           ),
           child: Row(

@@ -12,5 +12,11 @@ class TechViewModel extends ViewModel {
 
   bool get fetching => this.store.state.techNews.fetching;
 
-  int get firstFetchingTimestamp => this.store.state.techNews.firstFetchingTimestamp;
+  int get firstFetchingTimestamp =>
+      this.store.state.techNews.firstFetchingTimestamp;
+
+  bool get isEnd =>
+      this.store.state.techNews.total >= 0 &&
+      this.store.state.techNews.techNews.length >=
+          this.store.state.techNews.total;
 }
